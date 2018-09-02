@@ -1,19 +1,19 @@
-import mongoose from 'mongoose';
-import assert from 'assert';
-import info from 'console-info';
-import warn from 'console-warn';
-import Contact from './model';
+const mongoose = require('mongoose');
+const assert = require('assert');
+const info = require('console-info');
+const warn = require('console-warn');
+const Contact = require('./model');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://127.0.0.1:27017/contactdb', { useNewUrlParser: true });
 const db = mongoose.connection;
 
 
-export const addContact = (contactInfo) => {
+ const addContact = (contactInfo) => {
   Contact.findOne({phone: contactInfo.phone}, (err, userFound)=> {
     assert.equal(null, err);
     if (userFound) {
-      warn('user found');
+      warn('User already with entered phone number');
       return;
     }
     Contact.create(contactInfo, (err) => {
@@ -23,7 +23,7 @@ export const addContact = (contactInfo) => {
     })
   })
 }
-export const getContact = (name) => {
+ const getContact = (name) => {
   const search = new RegExp(name, 'i');
   Contact.find({$or: [{firstname: search }, {lastname: search }]})
   .exec((err, contact) => {
@@ -37,7 +37,7 @@ export const getContact = (name) => {
  * @function  [getContactList]
  * @returns {Sting} status
  */
-export const updateContact = (phone, contact) => {
+ const updateContact = (phone, contact) => {
   Contact.findOne({phone}, (err, userFound)=> {
     assert.equal(null, err);
     if(userFound) {
@@ -57,7 +57,7 @@ export const updateContact = (phone, contact) => {
  * @function  [deleteContact]
  * @returns {String} status
  */
-export const deleteContact = (phone) => {
+ const deleteContact = (phone) => {
   Contact.findOne({phone}, (err, userFound)=> {
     assert.equal(null, err);
     if(userFound) {
@@ -78,7 +78,7 @@ export const deleteContact = (phone) => {
  * @function  [getContactList]
  * @returns [contactlist] contacts
  */
-export const getContactList = (limit) => {
+ const getContactList = (limit) => {
   Contact.find()
   .limit(parseInt(limit) || 10)
   .exec((err, payload) => {
@@ -92,4 +92,12 @@ export const getContactList = (limit) => {
     info(`${contacts.length} matches`);
     db.close();
   })
+}
+
+module.exports = {
+  addContact, 
+  getContact, 
+  updateContact, 
+  deleteContact, 
+  getContactList
 }

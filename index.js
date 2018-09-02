@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-import program from 'commander';
-import { prompt } from 'inquirer'; // require inquirerjs library
-import { addContact, getContact, updateContact, deleteContact, getContactList } from './controller';
+const program = require('commander');
+const prompt = require('inquirer').prompt; // require inquirerjs library
+const { addContact, getContact, updateContact, deleteContact, getContactList } = require('./controller');
 
 // Craft questions to present to users
 const questions = [
@@ -63,8 +63,6 @@ program
   .alias('l')
   .description('List contacts')
   .action((options) => getContactList(options.limit));
-
-
 
 program.on('command:*', function () {
   console.error('Invalid command: %s\nSee --help for a list of available commands.', program.args.join(' '));

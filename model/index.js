@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const toLower = (v) => {
   return v.toLowerCase();
@@ -12,4 +12,4 @@ const contactSchema = mongoose.Schema({
 
 const Contact = mongoose.model('Contact', contactSchema);
 
-export default Contact;
+module.exports =  Contact ;
